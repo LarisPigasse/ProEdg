@@ -1,9 +1,10 @@
+// src/store/index.ts
 import { configureStore } from "@reduxjs/toolkit";
+import rootReducer from "./rootReducer";
 
 export const store = configureStore({
-  reducer: {
-    // I reducer verranno aggiunti in seguito
-  },
+  reducer: rootReducer,
+  devTools: process.env.NODE_ENV !== "production",
 });
 
 export type RootState = ReturnType<typeof store.getState>;

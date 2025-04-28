@@ -1,25 +1,21 @@
-import { Link } from "react-router-dom";
+import AppLogo from "./AppLogo";
+import ModulesMenu from "../navigation/ModulesMenu";
+import UserProfileMenu from "../navigation/UserProfileMenu";
 
 const Header = () => {
   return (
-    <header className="border-b border-gray-100 bg-white px-6 py-4">
-      <div className="flex items-center justify-between">
+    <header className="w-full border-b border-gray-100 bg-white px-4 py-0.5">
+      <div className="flex items-center justify-between w-full">
         {/* Logo e nome app a sinistra */}
         <div className="flex items-center">
-          <Link to="/" className="text-xl font-semibold text-gray-800">
-            EdgProject
-          </Link>
+          <AppLogo />
         </div>
 
-        {/* Informazioni utente a destra */}
+        {/* Menu dei moduli al centro */}
+        <ModulesMenu />
+
         <div className="flex items-center space-x-4">
-          <span className="text-sm text-gray-600">Benvenuto, Admin</span>
-          <button className="rounded bg-gray-100 px-3 py-1 text-sm text-gray-700 hover:bg-gray-200">
-            Profilo
-          </button>
-          <button className="rounded bg-gray-100 px-3 py-1 text-sm text-gray-700 hover:bg-gray-200">
-            Logout
-          </button>
+          <UserProfileMenu />
         </div>
       </div>
     </header>

@@ -1,29 +1,12 @@
-import { NavLink } from "react-router-dom";
-import menuItems from "../../config/menuItems";
-
-const HorizontalMenu = () => {
+const MainMenu = () => {
   return (
-    <nav className="border-b border-gray-100 bg-white px-6 py-2">
-      <ul className="flex space-x-6">
-        {menuItems.map((item) => (
-          <li key={item.path}>
-            <NavLink
-              to={item.path}
-              className={({ isActive }) =>
-                `block py-2 text-sm ${
-                  isActive
-                    ? "border-b-2 border-blue-500 font-medium text-blue-600"
-                    : "text-gray-700 hover:text-blue-500"
-                }`
-              }
-            >
-              {item.title}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+    <nav className="w-full border-b border-gray-100 bg-white px-5 py-1.5">
+      {/* Il menu sarà specifico per ogni modulo, per ora è vuoto */}
+      <div className="h-6 flex items-center">
+        {/* Contenuto del menu specifico del modulo */}
+      </div>
     </nav>
   );
 };
 
-export default HorizontalMenu;
+export default MainMenu;

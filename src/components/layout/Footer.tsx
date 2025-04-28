@@ -1,7 +1,12 @@
+import ConnectionStatus from "./ConnectionStatus";
+import VersionInfo from "./VersionInfo";
+import FooterMenu from "../navigation/FooterMenu";
 const Footer = () => {
   return (
-    <footer className="border-t border-gray-100 bg-white px-6 py-3 text-center text-sm text-gray-500">
-      <p>© {new Date().getFullYear()} EdgProject. Tutti i diritti riservati.</p>
+    <footer className="w-full border-t border-gray-200 bg-white px-4 py-1 text-right text-xxs text-dark flex items-center justify-between">
+      <ConnectionStatus />
+      <FooterMenu />
+      <VersionInfo />
     </footer>
   );
 };
