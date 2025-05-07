@@ -7,6 +7,11 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+
 export interface UserData {
   idOperatore: number;
   uuid: string;
@@ -54,14 +59,29 @@ export const authService = {
       throw new Error(data.message || "Errore di autenticazione");
     }
 
+    // Crea un oggetto con i dati della sessione utente
+    const userSession = {
+      token: data.token,
+      user: {
+        idOperatore: data.operatore.idOperatore,
+        uuid: data.operatore.uuid,
+        name: data.operatore.operatore, // Nome dell'operatore
+        email: data.operatore.email,
+        profilo: data.operatore.profilo,
+        livello: data.operatore.livello,
+      },
+    };
+
     // Salva token nel localStorage
     localStorage.setItem(APP_CONFIG.AUTH_TOKEN_KEY, data.token);
+    localStorage.setItem("edgpro_user_data", JSON.stringify(userSession.user));
 
     return data as LoginResponse;
   },
 
   logout: (): void => {
     localStorage.removeItem(APP_CONFIG.AUTH_TOKEN_KEY);
+    localStorage.removeItem("edgpro_user_data");
   },
 
   getToken: (): string | null => {
@@ -93,6 +113,37 @@ export const authService = {
     }
 
     return data as VerifyResponse;
+  },
+
+  // Metodo per il cambio password
+  changePassword: async (
+    payload: ChangePasswordRequest
+  ): Promise<ApiResponse<null>> => {
+    const token = localStorage.getItem(APP_CONFIG.AUTH_TOKEN_KEY);
+
+    if (!token) {
+      throw new Error("Token non trovato");
+    }
+
+    const response = await fetch(
+      `${APP_CONFIG.API_BASE_URL}/auth/change-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Errore durante il cambio password");
+    }
+
+    return data as ApiResponse<null>;
   },
 
   // Metodi per il reset della password
@@ -141,11 +192,9 @@ export const authService = {
       `${APP_CONFIG.API_BASE_URL}/auth/reset-password`,
       {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify({ token, newPassword }),
       }
     );

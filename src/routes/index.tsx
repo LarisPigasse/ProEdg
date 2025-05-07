@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, ReactNode } from "react";
 import { useAppSelector } from "../store/hooks";
 import MainLayout from "../layouts/MainLayout";
 
@@ -12,6 +12,7 @@ const ResetPasswordRequest = lazy(
 const ResetPasswordConfirm = lazy(
   () => import("../pages/auth/ResetPasswordConfirm")
 );
+const ChangePassword = lazy(() => import("../pages/auth/ChangePasswordModal"));
 const NotFound = lazy(() => import("../pages/base/NotFound"));
 
 // Componente di fallback durante il caricamento
@@ -92,6 +93,14 @@ const AppRoutes = () => {
           }
         />
 
+        <Route
+          path="/change-password"
+          element={
+            <Suspense fallback={<LoadingFallback />}>
+              <ChangePassword />
+            </Suspense>
+          }
+        />
         {/* Altre route protette verranno aggiunte qui */}
 
         {/* Route 404 - Not Found */}
