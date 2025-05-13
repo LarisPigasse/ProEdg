@@ -1,0 +1,3 @@
+// src/core/hooks/index.ts
+export { default as useModal } from "./useModal";
+// Altri hook...

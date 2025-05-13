@@ -3,67 +3,77 @@
 ## Informazioni Generali
 
 - **Nome progetto**: EDG - EdgPro
-- **Data ultimo aggiornamento**: 2025-05-05
-- **Sessione corrente**: 4
+- **Data ultimo aggiornamento**: 2025-05-12
+- **Sessione corrente**: 5
 - **Repository**:
   - Frontend: [ProEdg](https://github.com/LarisPigasse/ProEdg.git)
   - Backend: [ApiEdg](https://github.com/LarisPigasse/ApiEdg.git)
 
 ## Struttura del Progetto
 
-### Frontend (ProEdg)
+### Frontend (ProEdg) - Feature-Based
 
 ```
 src/
-├── assets/                             # Immagini, font, ecc.
-├── components/                         # Componenti React riutilizzabili
-│   ├── layout/                         # Componenti di layout (Header, Footer, ecc.)
-│   │   ├── AppLogo.tsx                 # Logo dell'applicazione
-│   │   ├── ConnectionStatus.tsx        # Indicatore connessione backend
-│   │   ├── Footer.tsx                  # Footer dell'applicazione
-│   │   ├── Header.tsx                  # Header dell'applicazione
-│   │   └── VersionInfo.tsx             # Componente info versione
-│   ├── navigation/                     # Componenti di navigazione
-│   |   ├── MainMenu.tsx                # Menu principale (specifico per modulo)
-│   |   ├── ModuleDropdownItem.tsx      # Elemento dropdown del menu moduli
-│   |   ├── ModuleMenuItem.tsx          # Elemento nel menu dei moduli
-│   |   ├── ModulesMenu.tsx             # Menu dei moduli nella header
-|   |   ├── FooterMenu.tsx              # Menu nel footer
-│   |   └── UserProfileMenu.tsx         # Menu utente con dropdown
-|   └── ui/
-│       ├── Button.tsx                  # Componente button con variati
-│       ├── Input.tsx                   # Componente input con varianti
-│       ├── SubmitButton.tsx            # Componente button per submit
-├── config/                             # Configurazioni statiche
-│   ├── constants.ts                    # Costanti globali dell'applicazione
+├── app/                                # Configurazione principale dell'app
+│   ├── costants.ts                     # Costanti globali
+│   ├── hooks.ts                        # Hook tipizzati per Redux
 │   ├── menuItems.ts                    # Definizione degli elementi del menu
-│   └── modulesConfig.ts                # Configurazione dei moduli
-├── context/                            # Context API e provider
-├── features/                           # Funzionalità organizzate (per Redux)
-├── hooks/                              # Custom hooks React
+│   ├── moduleItems.ts                  # Definizione degli elementi del moduli
+│   ├── rootReducer.ts                  # Combina tutti i singoli reducer in un unico reducer root
+│   ├── store.ts                        # Configurazione Redux store
+├── core/                               # Componenti e utility condivisi
+|   ├── components/                     # Componenti riutilizzabili
+│   │   ├── layout/                     # Componenti base del layout
+│   │   │   ├── AppLogo.tsx             # Logo dell'applicazione
+│   │   │   ├── ConnectionStatus.tsx    # Indicatore connessione backend
+│   │   │   ├── Footer.tsx              # Footer dell'applicazione
+│   │   │   ├── Header.tsx              # Header dell'applicazione
+│   │   │   └── VersionInfo.tsx         # Componente info versione
+│   │   ├── navigation/                 # Componenti navigazione
+│   │   │   ├── MainMenu.tsx            # Menu principale
+│   │   │   ├── ModuleDropdownItem.tsx  # Elemento dropdown del menu moduli
+│   │   │   ├── ModuleMenuItem.tsx      # Elemento nel menu dei moduli
+│   │   │   ├── ModulesMenu.tsx         # Menu dei moduli nella header
+│   │   │   ├── FooterMenu.tsx          # Menu nel footer
+│   │   │   └── UserProfileMenu.tsx     # Menu utente con dropdown
+│   │   └── ui/                         # Componenti base dell'interfaccia utente
+│   │       ├── Button.tsx              # Componente button con varianti
+│   │       ├── Input.tsx               # Componente input con varianti
+│   │       ├── SubmitButton.tsx        # Componente button per submit
+│   │       └── Modal.tsx               # Componente modale base
+│   ├── hooks/                          # Hook personalizzati condivisi
+│   │   ├── index.ts                    # Barrel file degli Hooks
+│   │   └── useModal.ts                 # Hook per gestione modal
+│   ├── services/                       # Servizi di base condivisi
+│   │   ├── apiService.ts               # Servizio base per le richieste API
+│   │   └── index.ts                    # Barrel file dei services
+│   └── utils/                          # Utility condivise
+├── features/                           # Feature/moduli dell'applicazione
+│   ├── auth/                           # Feature di autenticazione (flat)
+│   │   ├── AuthInitializer.tsx         # Componente per verifica autenticazione
+│   │   ├── authService.ts              # Servizio autenticazione
+│   │   ├── authSlice.ts                # Slice Redux per auth
+│   │   ├── ChangePasswordModal.tsx     # Modal cambio password
+│   │   ├── index.ts                    # Barrel file exports
+│   │   ├── Login.tsx                   # Pagina login
+│   │   ├── ResetPasswordConfirm.tsx    # Pagina conferma reset password
+│   │   └── ResetPasswordRequest.tsx    # Pagina richiesta reset password
+│   ├── operatori/                      # Feature di gestione operatori (flat)
+│   │   ├── index.ts                    # Barrel file exports
+│   │   ├── OperatoreForm.tsx           # Form creazione/modifica operatore
+│   │   ├── OperatoriList.tsx           # Pagina lista operatori
+│   │   ├── operatoriService.ts         # Servizio API operatori
+│   │   └── operatoriSlice.ts           # Slice Redux per operatori
+│   ├── shared/                         # Feature per componenti condivisi a livello applicativo
+│   │   ├── index.ts                    # Barrel file exports
+│   │   ├── Dashboard.tsx               # Form creazione/modifica operatore
+│   │   └── NotFound.tsx                # Slice Redux per operatori
 ├── layouts/                            # Layout condivisi dell'applicazione
 │   └── MainLayout.tsx                  # Layout principale con header, menu, content e footer
-├── pages/                              # Pagine dell'applicazione
-│   ├── auth/                           # Pagine base dell'applicazione
-│   |   ├── login.tsx                   # Pagina del login
-│   |   └── ResetPasswordConfirm.tsx    # Pagina di conferma del reset della password
-│   |   └── ResetPasswordRequest.tsx    # Pagina di richiesta del reset della password
-│   └── base/                           # Pagine base dell'applicazione
-│       ├── Dashboard.tsx               # Dashboard principale
-│       └── NotFound.tsx                # Pagina 404
-├── routes/                             # Configurazione delle route
-│   └── index.tsx                       # Definizione delle route dell'applicazione
-├── services/                           # Servizi e chiamate API
-|   └── apiService.ts                   # Tipi e funzioni per le risposte API
-|   └── authService.ts                  # Servizio di autenticazione
-├── store/                              # Configurazione Redux
-│   ├── hooks.ts                        # Hook tipizzati per Redux
-│   ├── index.ts                        # Configurazione dello store
-│   ├── rootReducer.ts                  # Combinazione dei reducer
-│   └── slices/                         # Slice Redux per funzionalità
-│       └── authSlice.ts                # Slice per autenticazione
-├── types/                              # Definizioni TypeScript
-└── utils/                              # Funzioni di utilità
+└── routes/                             # Configurazione delle route
+    └── index.tsx                       # Definizione delle route dell'applicazione
+
 ```
 
 ### Backend (ApiEdg)
@@ -71,15 +81,23 @@ src/
 ```
 src/
 ├── config/                         # Configurazioni
+│   └── database.ts                 # Connessione al database
 ├── controllers/                    # Controller per le route
+│   ├── auth.Controller.ts          # Controller per autenticazione
+│   └── operatori.Controller.ts     # Controller per gestione operatori
 ├── middleware/                     # Middleware Express
+│   └── auth.Middleware.ts          # Middleware per autenticazione
 ├── models/                         # Modelli dati/database
+│   ├── operatori.ts                # Model operatori
+│   └── resetToken.ts               # Model per il reset della password
 ├── routes/                         # Definizioni delle route API
+│   ├── auth.routes.ts              # Route per servizi di autenticazione
+|   ├── operatori.routes.ts         # Route per gestione operatori
+│   └── utils.routes.ts             # Route utili
 ├── services/
 │   ├── emailService.ts             # Servizio invio email automatiche
 │   └── email-templates/            # Template per le email atuomatiche
 │       ├── passwordReset.ts        # Template per il reset della password e per la conferma
-│       ├── ... (altri template)    # Altri template ancora da definire
 │       └── baseTemplate.ts         # Templare di base per elementi comuni a tutte le email automatiche
 ├── types/                          # Definizioni TypeScript
 └── utils/                          # Funzioni di utilità

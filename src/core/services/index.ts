@@ -1,0 +1,3 @@
+// src/core/services/index.ts
+export { default as apiService } from "./apiService";
+// Altri servizi...

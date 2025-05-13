@@ -11,23 +11,7 @@
 
 ### Organizzazione delle Cartelle
 
-```
-src/components/
-├── ui/               # Componenti di base
-│   ├── Button.tsx
-│   ├── Input.tsx
-│   └── Select.tsx
-├── forms/            # Componenti specifici per form
-│   ├── FormGroup.tsx
-│   └── ErrorMessage.tsx
-├── feedback/         # Componenti di feedback all'utente
-│   ├── Alert.tsx
-│   └── Toast.tsx
-├── layout/           # Componenti di layout
-│   └── Card.tsx
-└── data/             # Componenti per dati
-    └── DataTable.tsx
-```
+Adozione per il frontend della struttura features-based
 
 ### Definizione dei Componenti
 
@@ -38,8 +22,8 @@ src/components/
 
 ```typescript
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline" | "danger";
-  size?: "sm" | "md" | "lg";
+  variant?: ButtonVariant;
+  size?: ButtonSize;
   isLoading?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
@@ -106,6 +90,38 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
    - Varianti: info, success, warning, error
    - Proprietà: title, message, icon, dismissible
 
+## Utilizzo dei Componenti UI
+
+### Priorità dei Componenti Esistenti
+
+In EDG-ProEdg, tutti gli sviluppatori DEVONO utilizzare i componenti UI standardizzati esistenti anziché creare implementazioni personalizzate o usare elementi HTML nativi. Questo garantisce coerenza visiva, accessibilità e manutenibilità del codice.
+
+### Componenti Fondamentali
+
+I seguenti componenti UI fondamentali sono disponibili e DEVONO essere utilizzati:
+
+1. **Button** (`components/ui/Button.tsx`): Per tutti i pulsanti nell'applicazione, con varie varianti (primary, secondary, danger, ecc.)
+2. **Input** (`components/ui/Input.tsx`): Per tutti i campi di input di testo
+3. **Modal** (`components/ui/Modal.tsx`): Per tutte le finestre modali/dialog
+4. **Table** (`components/ui/Table.tsx`): Per tutte le tabelle di dati semplici
+5. **SubmitButton** (`components/ui/SubmitButton.tsx`): Per pulsanti di tipo submit nei form
+
+### Convenzioni di Stile
+
+- Non definire stili CSS/Tailwind in linea per i componenti esistenti.
+- Utilizzare le proprietà (props) disponibili per personalizzare i componenti.
+- Mantenere la convenzione `entita_nomeInput` per attributi id e name nei form.
+
+### Espansione del Catalogo Componenti
+
+Quando un componente necessario non esiste:
+
+1. Verificare se può essere creato componendo componenti esistenti
+2. Proporre l'aggiunta di un nuovo componente riutilizzabile al catalogo
+3. Documentare il nuovo componente seguendo lo standard esistente
+
+NON creare componenti duplicati con funzionalità simili a quelli esistenti.
+
 ### Componenti Form (Basati su Formik)
 
 1. **Form**: Wrapper per Formik con stili coerenti
@@ -132,6 +148,41 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 3. **Nomi delle Props**: camelCase (es. `isLoading`, `fullWidth`)
 4. **Varianti/Enum**: lowercase per valori (es. `variant="primary"`)
 5. **Eventi**: Prefisso `on` + descrizione (es. `onClick`, `onFilterChange`)
+
+## Convenzioni di Nomenclatura per i Campi di Input
+
+### Pattern di Nomenclatura
+
+Per tutti i campi di input nei form dell'applicazione, adottiamo la seguente convenzione di nomenclatura per gli attributi `id` e `name`:
+entita_nomeInput
+
+Dove:
+
+- `entita` è il nome dell'entità a cui appartiene il campo (es. "operatore", "cliente", "fornitore")
+- `nomeInput` è il nome del campo specifico (es. "email", "password", "nome")
+
+### Esempi
+
+<!-- Campi per l'entità Operatore -->
+<input id="operatore_nome" name="operatore_nome" type="text" />
+<input id="operatore_email" name="operatore_email" type="email" />
+<input id="operatore_password" name="operatore_password" type="password" />
+<select id="operatore_profilo" name="operatore_profilo">...</select>
+
+<!-- Campi per l'entità Cliente -->
+<input id="cliente_ragioneSociale" name="cliente_ragioneSociale" type="text" />
+<input id="cliente_partitaIva" name="cliente_partitaIva" type="text" />
+
+#### Inoltre
+
+Per evitare l'auto-completamento del browser, aggiungere sempre l'attributo autoComplete="off" ai form o ai singoli campi quando appropriato:
+
+<form autoComplete="off">...</form>
+<!-- oppure -->
+<input id="operatore_email" name="operatore_email" autoComplete="off" />
+
+Per i campi password nei form di creazione, usare autoComplete="new-password" per suggerire al browser che si tratta di un campo per una nuova password:
+<input id="operatore_password" name="operatore_password" autoComplete="new-password" />
 
 ## Accessibilità
 

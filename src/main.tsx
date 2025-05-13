@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App";
-import { store } from "./store";
+import { store } from "./App/store";
 import "./index.css";
 
 // Inizializza il QueryClient per React Query

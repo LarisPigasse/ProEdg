@@ -1,19 +1,15 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { lazy, Suspense, ReactNode } from "react";
-import { useAppSelector } from "../store/hooks";
+import { useAppSelector } from "../app/hooks";
 import MainLayout from "../layouts/MainLayout";
+import { Dashboard, NotFound } from "../features/shared";
 
-// Lazy load delle pagine
-const Dashboard = lazy(() => import("../pages/base/Dashboard"));
-const Login = lazy(() => import("../pages/auth/Login"));
-const ResetPasswordRequest = lazy(
-  () => import("../pages/auth/ResetPasswordRequest")
-);
-const ResetPasswordConfirm = lazy(
-  () => import("../pages/auth/ResetPasswordConfirm")
-);
-const ChangePassword = lazy(() => import("../pages/auth/ChangePasswordModal"));
-const NotFound = lazy(() => import("../pages/base/NotFound"));
+// Lazy import delle pagine più pesanti o meno utilizzate
+const Login = lazy(() => import("../features/auth/Login"));
+const ResetPasswordRequest = lazy(() => import("../features/auth/ResetPasswordRequest"));
+const ResetPasswordConfirm = lazy(() => import("../features/auth/ResetPasswordConfirm"));
+const ChangePassword = lazy(() => import("../features/auth/ChangePasswordModal"));
+const OperatoriList = lazy(() => import("../features/operatori/OperatoriList"));
 
 // Componente di fallback durante il caricamento
 const LoadingFallback = () => (
@@ -98,6 +94,15 @@ const AppRoutes = () => {
           element={
             <Suspense fallback={<LoadingFallback />}>
               <ChangePassword />
+            </Suspense>
+          }
+        />
+
+        <Route
+          path="/operatori"
+          element={
+            <Suspense fallback={<LoadingFallback />}>
+              <OperatoriList />
             </Suspense>
           }
         />
